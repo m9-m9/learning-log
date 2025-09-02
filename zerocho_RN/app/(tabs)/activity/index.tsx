@@ -1,6 +1,6 @@
-import { Text, TouchableOpacity, View } from 'react-native';
-import { usePathname, useRouter } from 'expo-router';
 import NotFound from '@/app/+not-found';
+import { usePathname, useRouter } from 'expo-router';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 export default function Index() {
 	const router = useRouter();
