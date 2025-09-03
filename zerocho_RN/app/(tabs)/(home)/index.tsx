@@ -1,14 +1,13 @@
+import { BlurView } from 'expo-blur';
 import { usePathname, useRouter } from 'expo-router';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function Index() {
 	const router = useRouter();
 	const pathname = usePathname();
 	const insets = useSafeAreaInsets();
-
-	console.log('pathname', pathname);
-	console.log('insets', insets);
+	const isLoggedIn = false;
 
 	return (
 		<View
@@ -17,32 +16,48 @@ export default function Index() {
 				{ paddingTop: insets.top, paddingBottom: insets.bottom },
 			]}
 		>
-			<View style={styles.tabContainer}>
-				<View style={styles.tab}>
-					<TouchableOpacity onPress={() => router.navigate(`/`)}>
-						<Text
-							style={{
-								color: pathname === '/' ? 'red' : 'black',
-							}}
-						>
-							For you
-						</Text>
-					</TouchableOpacity>
-				</View>
-				<View style={styles.tab}>
+			<BlurView style={styles.header} intensity={70}>
+				<Image
+					source={require('../../../assets/images/react-logo.png')}
+					style={styles.headerLogo}
+				/>
+				{!isLoggedIn && (
 					<TouchableOpacity
-						onPress={() => router.navigate(`/following`)}
+						style={styles.loginButton}
+						onPress={() => router.navigate(`/login`)}
 					>
-						<Text
-							style={{
-								color: pathname === '/' ? 'black' : 'red',
-							}}
-						>
-							Following
-						</Text>
+						<Text style={styles.loginButtonText}>로그인</Text>
 					</TouchableOpacity>
+				)}
+			</BlurView>
+			{isLoggedIn && (
+				<View style={styles.tabContainer}>
+					<View style={styles.tab}>
+						<TouchableOpacity onPress={() => router.navigate(`/`)}>
+							<Text
+								style={{
+									color: pathname === '/' ? 'red' : 'black',
+								}}
+							>
+								For you
+							</Text>
+						</TouchableOpacity>
+					</View>
+					<View style={styles.tab}>
+						<TouchableOpacity
+							onPress={() => router.navigate(`/following`)}
+						>
+							<Text
+								style={{
+									color: pathname === '/' ? 'black' : 'red',
+								}}
+							>
+								Following
+							</Text>
+						</TouchableOpacity>
+					</View>
 				</View>
-			</View>
+			)}
 
 			<View>
 				<TouchableOpacity
@@ -78,5 +93,27 @@ const styles = StyleSheet.create({
 	},
 	tab: {
 		flex: 1,
+		alignItems: 'center',
+	},
+	header: {
+		alignItems: 'center',
+	},
+	headerLogo: {
+		width: 42,
+		height: 42,
+	},
+	loginButton: {
+		position: 'absolute',
+		right: 20,
+		top: 0,
+		borderWidth: 1,
+		backgroundColor: 'black',
+		borderColor: 'black',
+		borderRadius: 10,
+		paddingVertical: 10,
+		paddingHorizontal: 20,
+	},
+	loginButtonText: {
+		color: 'white',
 	},
 });
